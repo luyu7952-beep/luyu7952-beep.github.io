@@ -1,0 +1,221 @@
+:root {
+  color-scheme: light;
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --text: #1e293b;
+  --muted: #64748b;
+  --line: #d9e0e8;
+  --accent: #b4232a;
+  --accent-dark: #841f25;
+  --green: #0f7a58;
+  --blue: #2563a9;
+  --shadow: 0 12px 28px rgba(24, 39, 75, .08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+.shell {
+  width: min(1180px, calc(100vw - 32px));
+  margin: 24px auto 40px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+h1, h2 { margin: 0; letter-spacing: 0; }
+h1 { font-size: 24px; line-height: 1.25; }
+h2 { font-size: 18px; }
+p { margin: 6px 0 0; color: var(--muted); }
+
+.status-pill {
+  min-width: 72px;
+  text-align: center;
+  padding: 8px 12px;
+  border: 1px solid #badbcc;
+  border-radius: 999px;
+  color: var(--green);
+  background: #eefaf4;
+  font-size: 14px;
+}
+
+.workspace, .results {
+  margin-top: 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tab, .ghost, .primary {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  min-height: 38px;
+  padding: 0 14px;
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.tab.active {
+  border-color: #f0b8bb;
+  background: #fff1f2;
+  color: var(--accent-dark);
+}
+
+.panel { display: none; padding: 18px; }
+.panel.active { display: block; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+label {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.wide { grid-column: 1 / -1; }
+
+input, textarea, select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px 11px;
+  color: var(--text);
+  background: #fff;
+  font: inherit;
+  min-height: 40px;
+}
+
+textarea { resize: vertical; line-height: 1.5; }
+
+input:focus, textarea:focus, select:focus {
+  outline: 2px solid #bfd7ff;
+  border-color: var(--blue);
+}
+
+.primary {
+  grid-column: 1 / -1;
+  width: fit-content;
+  min-width: 148px;
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  font-weight: 650;
+}
+
+.primary:disabled { opacity: .6; cursor: wait; }
+
+.results { padding: 16px 18px; }
+
+.results-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.jobs {
+  display: grid;
+  gap: 10px;
+}
+
+.empty {
+  color: var(--muted);
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 22px;
+  text-align: center;
+}
+
+.job {
+  display: grid;
+  gap: 10px;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfe;
+}
+
+.job-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.job-title { font-weight: 700; }
+.job-meta { color: var(--muted); font-size: 13px; }
+
+.badge {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #354a8c;
+  font-size: 13px;
+}
+
+.badge.done { background: #ecfdf3; color: var(--green); }
+.badge.error { background: #fff1f2; color: var(--accent-dark); }
+
+.downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.downloads a {
+  color: var(--blue);
+  border: 1px solid #bdd5f5;
+  background: #f3f8ff;
+  border-radius: 6px;
+  padding: 7px 10px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.error-text {
+  margin: 0;
+  white-space: pre-wrap;
+  color: var(--accent-dark);
+  background: #fff7f7;
+  border: 1px solid #f4c7ca;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+@media (max-width: 760px) {
+  .shell { width: min(100vw - 20px, 1180px); margin-top: 10px; }
+  .topbar, .job-top { align-items: flex-start; flex-direction: column; }
+  .form-grid { grid-template-columns: 1fr; }
+  .primary { width: 100%; }
+}

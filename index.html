@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>微博采集控制台</title>
+  <link rel="stylesheet" href="static/style.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <h1>微博采集控制台</h1>
+        <p>正文搜索、用户内搜索、话题指标采集都在这里启动和下载。</p>
+      </div>
+      <div class="status-pill" id="serverStatus">就绪</div>
+    </header>
+
+    <section class="workspace">
+      <nav class="tabs" aria-label="采集类型">
+        <button class="tab active" data-tab="posts" type="button">微博正文</button>
+        <button class="tab" data-tab="topics" type="button">话题指标</button>
+      </nav>
+
+      <section class="panel active" id="posts">
+        <form id="postForm" class="form-grid">
+          <label class="wide">
+            <span>关键词</span>
+            <textarea name="keywords" rows="3" placeholder="人工智能 AI 芯片"></textarea>
+          </label>
+          <label>
+            <span>采集页数</span>
+            <input name="pages" type="number" min="1" max="50" value="3" />
+          </label>
+          <label>
+            <span>请求间隔秒</span>
+            <input name="sleep" type="number" min="0" max="30" step="0.1" value="1.5" />
+          </label>
+          <label>
+            <span>指定用户 UID</span>
+            <input name="uid" placeholder="可留空" />
+          </label>
+          <label>
+            <span>导出格式</span>
+            <select name="format">
+              <option value="csv">CSV</option>
+              <option value="both">CSV + JSON</option>
+            </select>
+          </label>
+          <label class="wide">
+            <span>微博 Cookie</span>
+            <textarea name="cookie" rows="3" placeholder="公开访问失败时再填写；只会发给本机后台脚本"></textarea>
+          </label>
+          <button class="primary" type="submit">开始采集正文</button>
+        </form>
+      </section>
+
+      <section class="panel" id="topics">
+        <form id="topicForm" class="form-grid">
+          <label class="wide">
+            <span>话题词</span>
+            <textarea name="topics" rows="3" placeholder="人工智能 芯片 科技新闻"></textarea>
+          </label>
+          <label>
+            <span>抽样微博页数</span>
+            <input name="post_pages" type="number" min="1" max="50" value="3" />
+          </label>
+          <label>
+            <span>请求间隔秒</span>
+            <input name="sleep" type="number" min="0" max="30" step="0.1" value="1.5" />
+          </label>
+          <label>
+            <span>热搜监测轮数</span>
+            <input name="monitor_rounds" type="number" min="1" max="200" value="1" />
+          </label>
+          <label>
+            <span>监测间隔秒</span>
+            <input name="monitor_interval" type="number" min="1" max="3600" value="60" />
+          </label>
+          <label>
+            <span>导出格式</span>
+            <select name="format">
+              <option value="csv">CSV</option>
+              <option value="both">CSV + JSON</option>
+            </select>
+          </label>
+          <label class="wide">
+            <span>微博 Cookie</span>
+            <textarea name="cookie" rows="3" placeholder="公开访问失败时再填写"></textarea>
+          </label>
+          <button class="primary" type="submit">开始采集话题</button>
+        </form>
+      </section>
+    </section>
+
+    <section class="results">
+      <div class="results-head">
+        <h2>任务结果</h2>
+        <button class="ghost" id="clearJobs" type="button">清空列表</button>
+      </div>
+      <div id="jobs" class="jobs"></div>
+    </section>
+  </main>
+  <script src="static/app.js"></script>
+</body>
+</html>
