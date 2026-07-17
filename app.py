@@ -24,7 +24,9 @@ ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "outputs"
 INDEX_FILE = ROOT / "index.html"
 STATIC_DIR = ROOT / "static"
-HOST = os.environ.get("HOST", "0.0.0.0")
+
+# 强制锁定 0.0.0.0，彻底解决 127.0.0.1 导致 Render 健康检查超时被杀的问题
+HOST = "0.0.0.0"
 DEFAULT_PORT = 8000
 JOBS: dict[str, dict[str, Any]] = {}
 JOBS_LOCK = threading.Lock()
@@ -671,15 +673,30 @@ class AppHandler(BaseHTTPRequestHandler):
             self.send_json({"error": str(exc)}, 400)
 
 
+def prepare_static_assets() -> None:
+    """在启动服务前，动态在磁盘生成静态资产文件，确保文件系统安全检查顺利通过"""
+    STATIC_DIR.mkdir(exist_ok=True)
+    INDEX_FILE.write_text(INDEX_HTML, encoding="utf-8")
+    (STATIC_DIR / "style.css").write_text(STYLE_CSS, encoding="utf-8")
+    (STATIC_DIR / "app.js").write_text(APP_JS, encoding="utf-8")
+
+
 def main() -> None:
     try:
+        # 1. 动态生成实体页面资产，解决安全策略检查问题
+        prepare_static_assets()
+        
+        # 2. 读取 Render 分配的有效端口
         port = int(os.environ.get("PORT", DEFAULT_PORT))
         shown_host = "127.0.0.1" if HOST == "0.0.0.0" else HOST
+        
         print("正在启动微博采集控制台...", flush=True)
         print(f"工作目录：{ROOT}", flush=True)
         print(f"监听地址：{HOST}:{port}", flush=True)
         print(f"首页文件存在：{INDEX_FILE.exists()} -> {INDEX_FILE}", flush=True)
         print(f"静态目录存在：{STATIC_DIR.exists()} -> {STATIC_DIR}", flush=True)
+        
+        # 3. 这里的 HOST 已经死锁为 "0.0.0.0"，Render 网关能完美映射进入容器
         server = ThreadingHTTPServer((HOST, port), AppHandler)
         print(f"微博采集控制台已启动：http://{shown_host}:{port}", flush=True)
         server.serve_forever()
