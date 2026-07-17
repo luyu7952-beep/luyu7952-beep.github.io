@@ -9,7 +9,8 @@ COPY . .
 
 ENV HOST=0.0.0.0
 ENV PORT=8000
+ENV PYTHONUNBUFFERED=1
 
 EXPOSE 8000
 
-CMD ["python", "app.py"]
+CMD ["python", "-u", "app.py"]
